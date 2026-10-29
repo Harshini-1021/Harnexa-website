@@ -46,29 +46,29 @@ if ("IntersectionObserver" in window) {
     revealItems.forEach((item) => item.classList.add("visible"));
 }
  
-// 4. Contact form (sends to Netlify Forms after deployment)
+// 4. Contact form (sends to Formspree, which emails you)
 const form = document.getElementById("contactForm");
 const status = document.getElementById("formStatus");
  
 form.addEventListener("submit", (event) => {
     event.preventDefault();
-    status.style.color = "#c5b3ff";
+    status.style.color = "#5E5470";
     status.textContent = "Sending...";
  
-    fetch("/", {
+    fetch(form.action, {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(new FormData(form)).toString(),
+        body: new FormData(form),
+        headers: { Accept: "application/json" },
     })
         .then((response) => {
-            if (!response.ok) throw new Error("Request failed");
+            if (!response.ok) throw new Error("Status " + response.status);
             form.reset();
-            status.style.color = "#6ee7a0";
+            status.style.color = "#1E7A46";
             status.textContent = "Thank you! Your enquiry has been sent. We will reply by email soon.";
         })
-        .catch(() => {
-            status.style.color = "#ff8a8a";
-            status.textContent = "The form could not send. It only works after the site is deployed on Netlify. Please use the email or WhatsApp option for now.";
+        .catch((error) => {
+            status.style.color = "#B3261E";
+            status.textContent = "Could not send (" + error.message + "). Please use the email or WhatsApp option.";
         });
 });
  
