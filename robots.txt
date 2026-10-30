@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://harnexa.netlify.app/sitemap.xml
